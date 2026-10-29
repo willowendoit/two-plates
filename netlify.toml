@@ -1,0 +1,18 @@
+[build]
+  publish = "public"
+  command = "echo 'Static site, nothing to build'"
+
+[functions]
+  node_bundler = "esbuild"
+
+# Recipe photos load straight from Mob's image host, resized and cached by Netlify Image CDN.
+[images]
+  remote_images = ["https://mob-cdn\\.ams3\\.digitaloceanspaces\\.com/.*"]
+
+# Private household site: keep it out of search engines.
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Robots-Tag = "noindex, nofollow"
+    Referrer-Policy = "same-origin"
+    X-Content-Type-Options = "nosniff"

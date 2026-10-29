@@ -1,0 +1,766 @@
+<!doctype html>
+<html lang="en-GB">
+<title>Two Plates</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#F5F1E4">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Two Plates">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 34 26%27%3E%3Ccircle cx=%2712%27 cy=%2713%27 r=%2711%27 fill=%27%23FF705D%27/%3E%3Ccircle cx=%2722%27 cy=%2713%27 r=%2711%27 fill=%27%238ED462%27 fill-opacity=%27.85%27/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap">
+<style>
+/* Layout: floating white nav over a warm beige ground; giant tight Inter; colour-framed cards keyed to protein source.
+   Deliberately single-theme (a bright, flat, light world), every colour set explicitly. */
+:root{
+  --beige:#F5F1E4;
+  --beige-2:#E0DBCE;
+  --beige-3:#C2BCAD;
+  --ink:#2C2E2A;
+  --muted:#5E5F59;
+  --white:#FFFFFF;
+  --green:#8ED462;
+  --green-2:#C9E8A8;
+  --yellow:#F5E211;
+  --coral:#FF705D;
+  --blue:#2BA0FF;
+  --lilac:#EBC1FF;
+  --font:"Inter",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+img{max-width:100%}
+html{-webkit-text-size-adjust:100%}
+html{padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--beige);color:var(--ink);font-family:var(--font);font-weight:500;font-size:16px;line-height:1.45;
+  padding-left:max(0px,env(safe-area-inset-left,0px));padding-right:max(0px,env(safe-area-inset-right,0px))}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:60;background:var(--beige)}
+a{color:var(--ink)}
+button,input,select{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:3px solid var(--blue);outline-offset:2px;border-radius:8px}
+h1,h2,h3{font-weight:500;margin:0;text-wrap:balance}
+p{margin:0}
+.num{font-variant-numeric:tabular-nums}
+.wrap{max-width:1200px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.eyebrow{font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+
+/* nav */
+.navbar{position:sticky;top:env(safe-area-inset-top,0px);z-index:50;padding-top:14px}
+.nav{background:var(--white);border-radius:16px;padding:8px 8px 8px 16px;display:flex;align-items:center;gap:14px;box-shadow:0 1px 0 var(--beige-2)}
+.logo{display:flex;align-items:center;gap:9px;text-decoration:none;font-size:20px;letter-spacing:-.045em;white-space:nowrap}
+.logo svg{flex:0 0 auto}
+.links{display:flex;gap:2px;margin-left:8px}
+.links a{text-decoration:none;font-size:15px;padding:9px 13px;border-radius:10px}
+.links a[aria-current="page"]{background:var(--beige)}
+.links a:hover{background:var(--beige)}
+.who{margin-left:auto;display:flex;align-items:center;gap:8px}
+.av{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;font-size:13px;flex:0 0 auto;border:2px solid var(--white)}
+.av.sm{width:24px;height:24px;font-size:11px;border-width:0}
+.whobtn{display:flex;align-items:center;gap:8px;border:0;background:var(--beige);border-radius:10px;padding:5px 12px 5px 5px;font-size:15px;min-height:44px}
+.whobtn .av{border:0}
+.ghost{border:0;background:transparent;border-radius:10px;padding:0 12px;min-height:44px;font-size:15px;color:var(--muted)}
+.ghost:hover{background:var(--beige);color:var(--ink)}
+
+/* tab bar (phones) */
+.tabbar{display:none}
+@media (max-width:760px){
+  .links{display:none}
+  .whobtn span.lbl{display:none}
+  .tabbar{display:grid;grid-template-columns:repeat(4,1fr);position:fixed;left:0;right:0;bottom:0;z-index:50;background:var(--white);border-top:1px solid var(--beige-2);
+    padding:6px max(8px,env(safe-area-inset-right,0px)) calc(6px + env(safe-area-inset-bottom,0px)) max(8px,env(safe-area-inset-left,0px))}
+  .tabbar a{display:flex;flex-direction:column;align-items:center;gap:3px;text-decoration:none;font-size:11.5px;padding:6px 2px;border-radius:10px;min-height:48px;color:var(--muted)}
+  .tabbar a[aria-current="page"]{color:var(--ink);background:var(--beige)}
+  main{padding-bottom:calc(84px + env(safe-area-inset-bottom,0px))}
+}
+
+/* hero panels */
+.hero{margin-top:-74px;padding:128px 0 0;border-radius:0 0 44px 44px;position:relative;overflow:hidden}
+.hero h1{font-size:clamp(52px,9.6vw,132px);line-height:.92;letter-spacing:-.065em}
+.hero .deco{position:absolute;pointer-events:none}
+.clouds{display:block;width:100%;height:96px;margin-top:36px}
+@media (max-width:760px){.hero{border-radius:0 0 32px 32px}.clouds{height:56px}.hero .deco.hide-s{display:none}}
+
+.seg{display:inline-flex;background:var(--white);border-radius:14px;padding:5px;gap:4px;flex-wrap:wrap}
+.seg button{border:0;background:transparent;border-radius:10px;padding:0 18px;min-height:44px;font-size:16px}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--white)}
+
+.pill-btn{display:inline-flex;align-items:center;gap:14px;text-decoration:none;border:0;background:var(--white);border-radius:14px;padding:8px 8px 8px 20px;font-size:17px;min-height:56px}
+.pill-btn .dot{width:40px;height:40px;border-radius:50%;background:var(--ink);display:grid;place-items:center;flex:0 0 auto}
+.pill-btn.dark{background:var(--ink);color:var(--white)}
+.pill-btn.dark .dot{background:var(--green)}
+
+/* cards */
+.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px}
+@media (max-width:980px){.grid3{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:640px){.grid3{grid-template-columns:minmax(0,1fr);gap:16px}}
+.card{border-radius:24px;padding:9px;display:flex;min-width:0}
+.card-in{background:var(--white);border-radius:16px;overflow:hidden;display:flex;flex-direction:column;width:100%}
+.card-top{margin:0 6px;border-radius:0 0 12px 12px;padding:14px 18px 18px;display:flex;flex-direction:column;gap:14px;text-decoration:none}
+.card-top .src{font-size:12.5px;letter-spacing:.07em;text-transform:uppercase}
+.bigp{display:flex;align-items:baseline;gap:5px}
+.bigp b{font-weight:500;font-size:clamp(68px,7.4vw,92px);line-height:.84;letter-spacing:-.075em;font-variant-numeric:tabular-nums}
+.bigp span{font-size:20px;letter-spacing:-.04em}
+.card-body{padding:16px 18px 18px;display:flex;flex-direction:column;gap:10px;flex:1}
+.card-body h3{font-size:23px;line-height:1.08;letter-spacing:-.05em}
+.card-body h3 a{text-decoration:none}
+.card-body h3 a:hover{text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:3px}
+.meta{font-size:14.5px;color:var(--muted);font-variant-numeric:tabular-nums}
+.why{font-size:14px;background:var(--beige);border-radius:10px;padding:8px 10px;line-height:1.35}
+.actions{display:flex;gap:8px;margin-top:auto;padding-top:4px}
+.icon-btn{width:48px;height:48px;border-radius:12px;border:0;background:var(--beige);display:grid;place-items:center;flex:0 0 auto}
+.icon-btn[aria-pressed="true"] svg path{fill:var(--coral);stroke:var(--coral)}
+.go{flex:1;display:flex;align-items:center;justify-content:center;text-decoration:none;background:var(--ink);color:var(--white);border-radius:12px;font-size:16px;min-height:48px}
+
+/* bands */
+.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px}
+.stat{border-top:2px solid var(--ink);padding-top:14px;display:flex;flex-direction:column;gap:6px}
+.stat b{font-weight:500;font-size:clamp(60px,8vw,104px);letter-spacing:-.07em;line-height:.9;font-variant-numeric:tabular-nums}
+.stat span{font-size:17px;color:var(--muted)}
+@media (max-width:640px){.stats{grid-template-columns:minmax(0,1fr);gap:18px}}
+.h2{font-size:clamp(36px,4.8vw,60px);letter-spacing:-.06em;line-height:1}
+.mark{background:var(--yellow);border-radius:12px;padding:0 10px;box-decoration-break:clone;-webkit-box-decoration-break:clone}
+
+.notice{background:var(--white);border-radius:18px;padding:16px 18px;display:flex;gap:14px;align-items:center;flex-wrap:wrap;justify-content:space-between}
+.notice p{font-size:15.5px;max-width:60ch}
+.notice .btns{display:flex;gap:8px;flex-wrap:wrap}
+.btn{border:0;border-radius:12px;padding:0 16px;min-height:46px;font-size:15px;background:var(--beige);text-decoration:none;display:inline-flex;align-items:center}
+.btn.dark{background:var(--ink);color:var(--white)}
+.btn.line{background:transparent;border:2px solid var(--ink)}
+
+/* lists */
+.panel{background:var(--white);border-radius:20px;overflow:hidden}
+.row{display:flex;align-items:center;gap:16px;padding:14px 18px;border-top:1px solid var(--beige);text-decoration:none;min-width:0}
+.row:first-child{border-top:0}
+.row:hover{background:#FBF9F2}
+.row .pnum{width:84px;flex:0 0 auto;font-size:38px;letter-spacing:-.07em;line-height:1;font-variant-numeric:tabular-nums}
+.row .pnum small{font-size:16px;letter-spacing:-.02em}
+.row .tt{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+.row .tt b{font-weight:500;font-size:18.5px;letter-spacing:-.035em;line-height:1.2}
+.row .tt span{font-size:13.5px;color:var(--muted);font-variant-numeric:tabular-nums}
+.chip{border-radius:8px;padding:5px 9px;font-size:12.5px;white-space:nowrap;flex:0 0 auto}
+.marks{display:flex;gap:8px;align-items:center;font-size:14px;flex:0 0 auto;font-variant-numeric:tabular-nums}
+@media (max-width:640px){.row{gap:12px;padding:12px 14px}.row .pnum{width:62px;font-size:30px}.row .chip{display:none}.row .tt b{font-size:16.5px}}
+
+.tools{display:flex;flex-wrap:wrap;gap:12px 16px;align-items:flex-end}
+.field{display:flex;flex-direction:column;gap:6px;font-size:13px;color:var(--muted)}
+.search{display:flex;align-items:center;gap:10px;background:var(--white);border-radius:12px;padding:0 14px;min-height:48px;width:min(360px,100%)}
+.search input{border:0;outline:none;background:transparent;font-size:16px;width:100%;min-width:0;color:var(--ink)}
+.search:focus-within{outline:3px solid var(--blue);outline-offset:2px}
+select.sel{border:0;background:var(--white);border-radius:12px;min-height:48px;padding:0 12px;font-size:15px;color:var(--ink)}
+.range{display:flex;align-items:center;gap:10px;background:var(--white);border-radius:12px;min-height:48px;padding:0 14px;color:var(--ink);font-size:15px}
+.range input{accent-color:var(--ink);width:130px}
+.chips{display:flex;gap:8px;flex-wrap:wrap}
+.fchip{border:0;border-radius:999px;padding:0 15px;min-height:42px;font-size:14.5px;display:inline-flex;align-items:center;gap:7px}
+.fchip .c{opacity:.65;font-variant-numeric:tabular-nums}
+.fchip[aria-pressed="true"]{background:var(--ink)!important;color:var(--white)}
+
+/* recipe */
+.rhero{margin-top:-74px;padding:118px 0 28px;border-radius:0 0 40px 40px;position:relative;overflow:hidden}
+.rhero .bigp b{font-size:clamp(110px,17vw,220px)}
+.rhero .bigp span{font-size:clamp(22px,2.6vw,34px)}
+.rhero h1{font-size:clamp(34px,5.4vw,68px);letter-spacing:-.06em;line-height:1;max-width:18ch}
+.rtools{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.round{width:48px;height:48px;border-radius:50%;border:0;background:var(--white);display:grid;place-items:center;text-decoration:none;flex:0 0 auto}
+.round[aria-pressed="true"]{background:var(--ink)}
+.round[aria-pressed="true"] path{fill:var(--coral);stroke:var(--coral)}
+.macros{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:8px}
+.macro{background:var(--white);border-radius:14px;padding:12px 14px;display:flex;flex-direction:column;gap:2px}
+.macro b{font-weight:500;font-size:26px;letter-spacing:-.05em;font-variant-numeric:tabular-nums}
+.macro span{font-size:13px;color:var(--muted)}
+@media (max-width:760px){.macros{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.cols{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:28px;align-items:start}
+@media (max-width:860px){.cols{grid-template-columns:minmax(0,1fr)}}
+.rate{display:flex;align-items:center;gap:10px;background:var(--white);border-radius:16px;padding:8px 8px 8px 14px;flex-wrap:wrap}
+.rate .nm{font-size:16px}
+.stars{margin-left:auto;display:flex}
+.stars button{border:0;background:transparent;width:42px;height:46px;font-size:26px;line-height:1;color:var(--beige-3);padding:0}
+.stars button.on{color:var(--ink)}
+.stars .ro{font-size:24px;letter-spacing:4px;color:var(--beige-3);padding-right:6px}
+.stars .ro i{font-style:normal;color:var(--ink)}
+.ing{display:flex;justify-content:space-between;gap:16px;padding:10px 0;border-bottom:1px solid var(--beige-2);font-size:16px}
+.ing span:last-child{color:var(--muted);text-align:right;font-variant-numeric:tabular-nums}
+.ing.tick{cursor:pointer}
+.ing.tick input{width:20px;height:20px;accent-color:var(--ink);vertical-align:-4px;margin:0 8px 0 0}
+.ing.tick:has(input:checked) span:first-child{text-decoration:line-through;color:var(--muted)}
+.note{font:inherit;font-size:16px;line-height:1.5;border:2px solid var(--beige-2);border-radius:14px;padding:12px 14px;background:var(--white);color:var(--ink);resize:vertical;width:100%}
+.note:focus{border-color:var(--ink);outline:none}
+
+/* quick picks */
+.pickwrap{max-width:520px;margin:0 auto;display:flex;flex-direction:column;gap:16px}
+.bar{height:6px;background:var(--white);border-radius:3px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--ink);border-radius:3px;transition:width .25s}
+.pickcard{border-radius:28px;padding:10px;transform:rotate(-1.5deg)}
+.pickcard .card-top{padding:22px 20px 22px;min-height:240px;justify-content:space-between;position:relative}
+.pickcard .bigp b{font-size:clamp(96px,22vw,140px)}
+@media (prefers-reduced-motion:reduce){.pickcard{transform:none}.bar i{transition:none}}
+
+/* login */
+.login{min-height:100vh;display:flex;flex-direction:column}
+.tiles{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.tile{border:0;border-radius:24px;padding:9px;text-align:left}
+.tile span.in{display:flex;flex-direction:column;gap:28px;background:var(--white);border-radius:16px;padding:18px;outline:3px solid transparent;outline-offset:-3px}
+.tile[aria-pressed="true"] span.in{outline-color:var(--ink)}
+.tile .nm{font-size:clamp(28px,4vw,38px);letter-spacing:-.06em;line-height:1}
+.pass{border:2px solid var(--ink);border-radius:14px;padding:0 16px;min-height:58px;font-size:20px;background:var(--white);width:100%}
+.err{color:#B3261E;font-size:14px}
+
+.toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--white);border-radius:12px;padding:12px 18px;font-size:15px;z-index:70;max-width:calc(100% - 32px)}
+@media (max-width:760px){.toast{bottom:calc(96px + env(safe-area-inset-bottom,0px))}}
+footer.foot{padding-block:36px 48px;font-size:13.5px;color:var(--muted);display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:center}
+.linkbtn{border:0;background:transparent;text-decoration:underline;text-underline-offset:3px;color:var(--muted);padding:6px 0;font-size:13.5px}
+.empty{padding:28px 20px;text-align:center;color:var(--muted)}
+/* photos: sprite sheets of 6x6 tiles at 4:3 */
+.ph{display:block;background-color:var(--beige-2);aspect-ratio:4/3;width:100%;max-width:100%;height:auto;object-fit:cover}
+.card-top.photo{padding:0;margin:0 6px;position:relative;overflow:hidden;border-radius:0 0 12px 12px;gap:0}
+.card-top.photo .ph{border-radius:0 0 12px 12px}
+.tagchip{position:absolute;left:10px;top:10px;font-size:12px;letter-spacing:.07em;text-transform:uppercase;background:var(--white);border-radius:8px;padding:5px 8px}
+.pbadge{position:absolute;left:10px;bottom:10px;border-radius:12px;padding:8px 12px 9px;display:flex;align-items:baseline;gap:4px}
+.pbadge b{font-weight:500;font-size:44px;line-height:.85;letter-spacing:-.07em;font-variant-numeric:tabular-nums}
+.pbadge span{font-size:15px;letter-spacing:-.03em}
+.thumb{width:76px;flex:0 0 auto;border-radius:10px}
+@media (max-width:640px){.thumb{width:58px;border-radius:8px}}
+.rgrid{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:28px;align-items:end}
+.rphoto{border-radius:26px;border:8px solid var(--white);box-shadow:0 1px 0 rgba(0,0,0,.04)}
+@media (max-width:860px){.rgrid{grid-template-columns:minmax(0,1fr)}.rphoto{order:-1}}
+</style>
+
+<div id="navwrap" class="navbar" hidden>
+  <div class="wrap">
+    <nav class="nav" aria-label="Main">
+      <a class="logo" href="#tonight">
+        <svg width="34" height="26" viewBox="0 0 34 26" aria-hidden="true"><circle cx="12" cy="13" r="11" fill="#FF705D"/><circle cx="22" cy="13" r="11" fill="#8ED462" style="mix-blend-mode:multiply"/></svg>
+        Two Plates
+      </a>
+      <div class="links">
+        <a href="#tonight" data-route="tonight">Tonight</a>
+        <a href="#welove" data-route="welove">We love</a>
+        <a href="#library" data-route="library">Library</a>
+        <a href="#picks" data-route="picks">Quick picks</a>
+      </div>
+      <div class="who">
+        <button type="button" class="whobtn" data-act="switch" id="whobtn"></button>
+      </div>
+    </nav>
+  </div>
+</div>
+
+<main id="view"><p class="empty" style="padding-top:120px">Getting the kitchen ready…</p></main>
+
+<nav class="tabbar" id="tabbar" aria-label="Sections" hidden>
+  <a href="#tonight" data-route="tonight"><svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="13" r="8" fill="none" stroke="currentColor" stroke-width="2"/><path d="M8 4c1 1 1 2 0 3M12 3c1 1 1 2 0 3M16 4c1 1 1 2 0 3" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>Tonight</a>
+  <a href="#welove" data-route="welove"><svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20C6 15.5 3 12.5 3 8.8 3 6.2 5 4.3 7.4 4.3c1.9 0 3.4 1.1 4.6 2.6 1.2-1.5 2.7-2.6 4.6-2.6C19 4.3 21 6.2 21 8.8c0 3.7-3 6.7-9 11.2Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>We love</a>
+  <a href="#library" data-route="library"><svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h4v16H5zM11 4h4v16h-4zM17.2 4.6l3.6 1-4 15-3.6-1z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>Library</a>
+  <a href="#picks" data-route="picks"><svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="3" width="14" height="18" rx="3" fill="none" stroke="currentColor" stroke-width="2" transform="rotate(-6 12 12)"/><path d="M9 12l2 2 4-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Picks</a>
+</nav>
+
+<div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+
+<script>
+(async () => {
+/* ---------- live data: sign-in, recipes and shared state from the site's API ---------- */
+let REMOTE = null, PAYLOAD = null;
+try {
+  const st = await fetch('/api/state', {credentials:'same-origin'});
+  if (st.ok) { REMOTE = await st.json(); PAYLOAD = await fetch('/api/recipes', {credentials:'same-origin'}).then(r => r.json()); }
+} catch (e) {}
+const D = PAYLOAD ? PAYLOAD.recipes : [];
+const N = D.length;
+const BY = Object.fromEntries(D.map(r => [r.s, r]));
+const GROUP = {chicken:'chicken',fish:'fish',tofu:'tofu',legumes:'beans',beef:'meat',pork:'meat',lamb:'meat',eggs:'eggsdairy',dairy:'eggsdairy',other:'other'};
+const G = {
+  chicken:{label:'Chicken',bg:'#FF705D'},
+  fish:{label:'Fish & seafood',bg:'#2BA0FF'},
+  tofu:{label:'Tofu & tempeh',bg:'#8ED462'},
+  beans:{label:'Beans & lentils',bg:'#C9E8A8'},
+  meat:{label:'Beef, pork & lamb',bg:'#EBC1FF'},
+  eggsdairy:{label:'Eggs & dairy',bg:'#F5E211'},
+  other:{label:'Other',bg:'#FFFFFF'}
+};
+const grp = r => GROUP[r.p] || 'other';
+const PEOPLE = {will:{name:'Will',c:'#FF705D',i:'W'}, ella:{name:'Ella',c:'#2BA0FF',i:'E'}};
+const other = u => u === 'will' ? 'ella' : 'will';
+const esc = s => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;');
+const PH = PAYLOAD ? PAYLOAD.photos : {}, PHBASE = PAYLOAD ? PAYLOAD.base : '';
+const imgUrl = (r, w) => PH[r.s] ? '/.netlify/images?url=' + encodeURIComponent(PHBASE + PH[r.s]) + '&w=' + w + '&fm=webp&q=72' : '';
+function photo(r, cls){
+  const w = cls === 'thumb' ? 180 : cls === 'rphoto' ? 960 : 720;
+  const u = imgUrl(r, w);
+  return u ? `<img class="ph ${cls||''}" src="${u}" alt="${esc('Photo of ' + r.t)}" loading="lazy" decoding="async">` : `<span class="ph ${cls||''}" aria-hidden="true"></span>`;
+}
+function wirePhotos(){}
+const ARROW = '<svg width="15" height="15" viewBox="0 0 14 14" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+const HEART = '<svg width="20" height="18" viewBox="0 0 20 18" aria-hidden="true"><path d="M10 16.5C4 12 1.5 9 1.5 5.6 1.5 3.2 3.4 1.5 5.6 1.5c1.8 0 3.3 1.1 4.4 2.5 1.1-1.4 2.6-2.5 4.4-2.5 2.2 0 4.1 1.7 4.1 4.1 0 3.4-2.5 6.4-8.5 10.9Z" fill="none" stroke="#2C2E2A" stroke-width="1.8" stroke-linejoin="round"/></svg>';
+
+/* ---------- state: each person's ratings live in the site's storage; layout prefs stay on this device ---------- */
+const blank = () => ({user:null, aud:'us', ratings:{will:{},ella:{}}, favs:{will:{},ella:{}}, likes:{will:{},ella:{}}, skips:{will:{},ella:{}}, notes:{will:{},ella:{}}, cooked:[]});
+let S = blank();
+if (REMOTE) {
+  S.user = REMOTE.me;
+  ['will','ella'].forEach(u => { const p = REMOTE.people[u] || {}; S.ratings[u] = p.ratings||{}; S.favs[u] = p.favs||{}; S.likes[u] = p.likes||{}; S.skips[u] = p.skips||{}; S.notes[u] = p.notes||{}; (p.cooked||[]).forEach(c => S.cooked.push({s:c.s, d:c.d, by:u})); });
+}
+try { const a = localStorage.getItem('twoplates.aud'); if (a === 'us' || a === 'will' || a === 'ella') S.aud = a; } catch (e) {}
+let saveT, saving = Promise.resolve();
+function save(){
+  try { localStorage.setItem('twoplates.aud', S.aud); } catch (e) {}
+  clearTimeout(saveT);
+  saveT = setTimeout(() => {
+    const me = S.user; if (!me) return;
+    const body = JSON.stringify({ratings:S.ratings[me], favs:S.favs[me], likes:S.likes[me], skips:S.skips[me], notes:S.notes[me], cooked:S.cooked.filter(c => c.by === me).map(c => ({s:c.s, d:c.d}))});
+    saving = fetch('/api/state', {method:'PUT', credentials:'same-origin', headers:{'content-type':'application/json'}, body})
+      .then(r => { if (r.status === 401) { toast('You\u2019ve been signed out. Sign in again to keep saving.'); setTimeout(() => location.reload(), 1800); } else if (!r.ok) toast('Couldn\u2019t save that. Check your connection and try again.'); })
+      .catch(() => toast('Couldn\u2019t save that. Check your connection and try again.'));
+  }, 500);
+}
+async function post(path, body){ const r = await fetch('/api/' + path, {method:'POST', credentials:'same-origin', headers:{'content-type':'application/json'}, body: JSON.stringify(body||{})}); let j = {}; try { j = await r.json(); } catch (e) {} return {ok: r.ok, j}; }
+
+/* ---------- features & recommendations ---------- */
+const STAPLE = new Set(['salt','sea salt','black pepper','pepper','olive oil','vegetable oil','oil','water','garlic','garlic clove','garlic cloves','onion','sugar','lemon','lime','cooking spray','vegetable oil spray','flaky sea salt','extra virgin olive oil','neutral oil','rapeseed oil','sunflower oil','spray oil','ice']);
+const normIng = s => s.toLowerCase().replace(/\(.*?\)/g,'').replace(/\b(fresh|skin-on|skinless|boneless|dried|tinned|canned|ground|cooked|drained|large|small|medium|free-range|ripe|raw)\b/g,'').replace(/[,]/g,' ').replace(/\s+/g,' ').trim().replace(/(es|s)$/,'');
+const toks = D.map(r => {
+  const t = {};
+  t['p:'+r.p] = 3;
+  (r.ty||[]).forEach(x => t['t:'+x.toLowerCase()] = 2);
+  (r.i||[]).forEach(x => { if (x[2]) return; const k = normIng(x[1]); if (!k || STAPLE.has(k) || STAPLE.has(k+'s')) return; t['i:'+k] = 1; });
+  return t;
+});
+const df = {}; toks.forEach(t => Object.keys(t).forEach(k => df[k] = (df[k]||0)+1));
+const VEC = toks.map(t => { const v = {}; let n = 0; for (const k in t) { const w = t[k] * Math.log(1 + N/df[k]); v[k] = w; n += w*w; } n = Math.sqrt(n)||1; for (const k in v) v[k] /= n; return v; });
+const IDX = Object.fromEntries(D.map((r,i) => [r.s, i]));
+const dot = (a,b) => { let s = 0; const [x,y] = Object.keys(a).length < Object.keys(b).length ? [a,b] : [b,a]; for (const k in x) if (k in y) s += x[k]*y[k]; return s; };
+const dens = r => r.n[1] / Math.max(r.n[0],1);
+function pctRank(vals){ const o = vals.map((v,i)=>[v,i]).sort((a,b)=>a[0]-b[0]); const out = new Array(vals.length); o.forEach(([v,i],k)=> out[i] = k/(vals.length-1)); return out; }
+const PD = pctRank(D.map(dens)), PP = pctRank(D.map(r=>r.n[1]));
+const PS = D.map((r,i) => 0.6*PD[i] + 0.4*PP[i]);
+
+function signals(u){
+  const w = {}; const add = (s,v) => { if (BY[s]) w[s] = (w[s]||0) + v; };
+  Object.keys(S.favs[u]).forEach(s => add(s, 2));
+  Object.entries(S.ratings[u]).forEach(([s,v]) => add(s, v>=5?2:v===4?1:v===3?0:-1));
+  Object.keys(S.likes[u]).forEach(s => add(s, 1));
+  Object.keys(S.skips[u]).forEach(s => add(s, -1));
+  for (const s in w) w[s] = Math.max(-2, Math.min(3, w[s]));
+  return w;
+}
+function profile(u){
+  const sig = signals(u); const p = {}; let any = false;
+  for (const s in sig) { const w = sig[s]; if (!w) continue; if (w > 0) any = true; const v = VEC[IDX[s]]; for (const k in v) p[k] = (p[k]||0) + w*v[k]; }
+  if (!any) return null;
+  let n = 0; for (const k in p) n += p[k]*p[k]; n = Math.sqrt(n)||1; for (const k in p) p[k] /= n;
+  return {p, sig};
+}
+const daysAgo = d => (Date.now() - new Date(d).getTime()) / 864e5;
+const cookedRecently = (u,s) => S.cooked.some(c => c.s === s && (c.by === u || c.by === 'both') && daysAgo(c.d) < 14);
+const touched = (u,s) => s in S.ratings[u] || s in S.favs[u] || s in S.skips[u];
+
+function recommend(aud, count, exclude){
+  exclude = exclude || new Set();
+  const ppl = aud === 'us' ? ['will','ella'] : [aud];
+  const profs = ppl.map(u => ({u, pr: profile(u)}));
+  const cands = [];
+  const tt = new Set(); ppl.forEach(u => [S.ratings[u], S.favs[u], S.skips[u]].forEach(o => Object.keys(o).forEach(s => BY[s] && tt.add(BY[s].t.toLowerCase()))));
+  D.forEach((r,i) => {
+    if (exclude.has(r.s) || tt.has(r.t.toLowerCase()) || ppl.some(u => touched(u, r.s) || (S.ratings[u][r.s]||5) <= 2)) return;
+    cands.push(i);
+  });
+  const per = profs.map(({u,pr}) => {
+    if (!pr) return null;
+    const raw = cands.map(i => dot(pr.p, VEC[i]));
+    const mx = Math.max(0.0001, ...raw);
+    const m = {}; cands.forEach((i,k) => { const tn = Math.max(0, raw[k])/mx; const fresh = cookedRecently(u, D[i].s) ? 0 : 1; m[i] = 0.6*tn + 0.3*PS[i] + 0.1*fresh; });
+    return m;
+  });
+  const live = per.filter(Boolean);
+  const scored = cands.map(i => ({i, sc: live.length ? Math.min(...live.map(m => m[i])) : PS[i] - (ppl.some(u => cookedRecently(u, D[i].s)) ? 0.5 : 0)}));
+  scored.sort((a,b) => b.sc - a.sc);
+  const out = [], seen = {}, cap = 2;
+  for (const x of scored) { const g = grp(D[x.i]); if ((seen[g]||0) >= cap && out.length < 6) continue; seen[g] = (seen[g]||0)+1; out.push(x); if (out.length >= count) break; }
+  return out.map(x => ({r: D[x.i], why: whyFor(profs, x.i)}));
+}
+function whyFor(profs, i){
+  let best = null;
+  profs.forEach(({u,pr}) => { if (!pr) return; for (const s in pr.sig) { if (pr.sig[s] <= 0) continue; const sim = dot(VEC[IDX[s]], VEC[i]); if (!best || sim > best.sim) best = {sim, s, u}; } });
+  const r = D[i];
+  if (!best || best.sim < 0.08) return (dens(r)*100).toFixed(1) + 'g protein per 100 kcal, one of the leanest in the library';
+  const you = best.u === S.user; const nm = PEOPLE[best.u].name; const t = BY[best.s].t; const st = S.ratings[best.u][best.s];
+  if (st >= 4) return (you ? 'You' : nm) + ' rated ' + t + ' ' + st + '★';
+  if (best.s in S.favs[best.u]) return 'Like ' + t + ', a favourite of ' + (you ? 'yours' : nm + '’s');
+  return 'Like ' + t + ', which ' + (you ? 'you' : nm) + ' said yes to';
+}
+function similar(s, k){
+  const i0 = IDX[s];
+  return D.map((r,i) => ({i, sc: i === i0 ? -1 : dot(VEC[i0], VEC[i]) + 0.15*PS[i]})).sort((a,b)=>b.sc-a.sc).slice(0,k).map(x => D[x.i]);
+}
+
+/* ---------- pieces ---------- */
+const kcalLine = r => r.n[0] + ' kcal · ' + (r.m ? r.m + ' min' : 'time varies') + ' · ' + r.n[6] + 'g fibre';
+function card(r, why){
+  const g = G[grp(r)], fav = r.s in S.favs[S.user];
+  return `<article class="card" style="background:${g.bg};${g.bg==='#FFFFFF'?'box-shadow:inset 0 0 0 2px #E0DBCE':''}">
+    <div class="card-in">
+      <a class="card-top photo" href="#r-${r.s}" tabindex="-1" aria-hidden="true">
+        ${photo(r)}
+        <span class="tagchip">${esc(g.label)}</span>
+        <span class="pbadge" style="background:${g.bg};${g.bg==='#FFFFFF'?'box-shadow:inset 0 0 0 2px #E0DBCE':''}"><b>${r.n[1]}</b><span>g protein</span></span>
+      </a>
+      <div class="card-body">
+        <h3><a href="#r-${r.s}">${esc(r.t)}</a></h3>
+        <p class="meta">${kcalLine(r)}</p>
+        ${why ? `<p class="why">${esc(why)}</p>` : ''}
+        <div class="actions">
+          <button type="button" class="icon-btn" data-act="fav" data-s="${r.s}" aria-pressed="${fav}" aria-label="${fav?'Remove from favourites':'Add to favourites'}">${HEART}</button>
+          <a class="go" href="#r-${r.s}">Open recipe</a>
+        </div>
+      </div>
+    </div>
+  </article>`;
+}
+function starsRO(v){ return `<span class="ro" aria-label="${v?v+' out of 5 stars':'Not rated yet'}">${v ? '<i>'+'★'.repeat(v)+'</i>'+'★'.repeat(5-v) : '<span style="font-size:14px;letter-spacing:0;color:#5E5F59">Not rated yet</span>'}</span>`; }
+function row(r, extra){
+  const g = G[grp(r)];
+  return `<a class="row" href="#r-${r.s}">
+    ${photo(r,'thumb')}
+    <span class="pnum">${r.n[1]}<small>g</small></span>
+    <span class="tt"><b>${esc(r.t)}</b><span>${extra || (r.n[0] + ' kcal · ' + (dens(r)*100).toFixed(1) + 'g protein per 100 kcal' + (r.m ? ' · ' + r.m + ' min' : ''))}</span></span>
+    <span class="chip" style="background:${g.bg};${g.bg==='#FFFFFF'?'box-shadow:inset 0 0 0 1px #C2BCAD':''}">${esc(g.label)}</span>
+  </a>`;
+}
+function av(u, sm){ const p = PEOPLE[u]; return `<span class="av${sm?' sm':''}" style="background:${p.c}" aria-hidden="true">${p.i}</span>`; }
+let toastT;
+function toast(msg){ const t = document.getElementById('toast'); t.textContent = msg; t.hidden = false; clearTimeout(toastT); toastT = setTimeout(()=> t.hidden = true, 2200); }
+const clouds = fill => `<svg class="clouds" viewBox="0 0 1440 120" preserveAspectRatio="none" aria-hidden="true"><path d="M0 120V84C120 30 220 30 300 70c60-46 170-46 220 4 180-20 240 34 380 18 110-62 230-54 280-14 80-40 200-32 260 0v38Z" fill="${fill}"/><path d="M118 96c30-30 86-30 110-2 22-16 62-14 72 6Z" fill="#FFFFFF"/><path d="M1148 96c30-32 92-30 114-2 26-16 66-12 76 8Z" fill="#FFFFFF"/></svg>`;
+const squiggle = (c, cls, st) => `<svg class="deco ${cls||''}" style="${st}" width="200" height="100" viewBox="0 0 200 100" aria-hidden="true"><path d="M10 76C34 14 62 96 92 40s66-30 98 10" fill="none" stroke="${c}" stroke-width="10" stroke-linecap="round"/></svg>`;
+
+/* ---------- views ---------- */
+let loginWho = 'will', loginErr = '';
+function vLogin(){
+  return `<section class="login">
+    <div style="background:var(--green);border-radius:0 0 40px 40px;padding:40px 0 92px;position:relative;overflow:hidden">
+      ${squiggle('#F5E211','', 'right:6%;top:46px')}
+      <div class="wrap" style="max-width:640px;display:flex;flex-direction:column;gap:36px;position:relative">
+        <span class="logo" style="font-size:22px"><svg width="36" height="27" viewBox="0 0 34 26" aria-hidden="true"><circle cx="12" cy="13" r="11" fill="#FF705D"/><circle cx="22" cy="13" r="11" fill="#F5E211" style="mix-blend-mode:multiply"/></svg>Two Plates</span>
+        <h1 style="font-size:clamp(64px,13vw,120px);line-height:.88;letter-spacing:-.07em">Who's<br>cooking?</h1>
+      </div>
+    </div>
+    <form class="wrap" id="loginform" style="max-width:640px;margin-top:-56px;display:flex;flex-direction:column;gap:22px;position:relative;width:100%" novalidate>
+      <div class="tiles" role="group" aria-label="Choose who you are">
+        ${['will','ella'].map(u => `<button type="button" class="tile" data-act="loginwho" data-u="${u}" aria-pressed="${loginWho===u}" style="background:${PEOPLE[u].c}"><span class="in">${av(u)}<span class="nm">${PEOPLE[u].name}</span></span></button>`).join('')}
+      </div>
+      <div class="field" style="color:var(--ink);font-size:15px">
+        <label for="pass">Kitchen passcode</label>
+        <input id="pass" class="pass" type="password" autocomplete="current-password" aria-describedby="passhelp">
+        <span id="passhelp" style="color:var(--muted);font-size:14px">One passcode for the two of you. This phone stays signed in.</span>
+        ${loginErr ? `<span class="err" role="alert">${esc(loginErr)}</span>` : ''}
+      </div>
+      <button type="submit" class="pill-btn dark" style="justify-content:space-between;width:100%;font-size:19px;min-height:64px">Let me in, ${PEOPLE[loginWho].name}<span class="dot" style="color:var(--ink)">${ARROW}</span></button>
+    </form>
+  </section>`;
+}
+
+function vTonight(){
+  const aud = S.aud, recs = recommend(aud, 6);
+  const ppl = aud === 'us' ? ['will','ella'] : [aud];
+  const cold = ppl.filter(u => !profile(u));
+  const head = aud === 'us' ? 'for both of you' : aud === S.user ? 'for you' : 'for ' + PEOPLE[aud].name;
+  const today = new Date().toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long'});
+  const lean = D.filter(r => r.n[1] >= 30 && r.n[0] <= 700).length;
+  const med = D.map(r=>r.n[1]).sort((a,b)=>a-b)[Math.floor(N/2)];
+  return `<header class="hero" style="background:var(--green)">
+      ${squiggle('#F5E211','hide-s','left:3%;top:120px')}
+      <svg class="deco hide-s" style="right:6%;top:112px" width="118" height="118" viewBox="0 0 120 120" aria-hidden="true"><circle cx="60" cy="60" r="46" fill="#FF705D"/><path d="M40 54q20-26 40 0" fill="none" stroke="#2C2E2A" stroke-width="4" stroke-linecap="round"/><path d="M44 76h32" stroke="#2C2E2A" stroke-width="4" stroke-linecap="round"/></svg>
+      <div class="wrap" style="display:flex;flex-direction:column;align-items:center;text-align:center;gap:24px;position:relative">
+        <span class="eyebrow" style="color:var(--ink)">${esc(today)}</span>
+        <h1>Tonight,<br>${esc(head)}</h1>
+        <div class="seg" role="group" aria-label="Whose recommendations">
+          ${[[S.user,'For me'],['us','For us'],[other(S.user),'For '+PEOPLE[other(S.user)].name]].map(([k,l]) => `<button type="button" data-act="aud" data-a="${k}" aria-pressed="${aud===k}">${esc(l)}</button>`).join('')}
+        </div>
+      </div>
+      ${clouds('#F5E211'.replace('#F5E211','#F5F1E4'))}
+    </header>
+    <div class="wrap" style="display:flex;flex-direction:column;gap:22px;padding-top:28px">
+      ${cold.length ? `<div class="notice"><p>${cold.length===2 ? 'Neither of you has rated anything yet, so these are simply the leanest high-protein picks.' : (cold[0]===S.user ? 'You haven’t rated anything yet' : PEOPLE[cold[0]].name + ' hasn’t rated anything yet') + ', so ' + (cold.length===ppl.length ? 'these are the leanest high-protein picks.' : 'these lean on the other person’s taste.')} Rate a few to sharpen them.</p>
+        <div class="btns"><a class="btn dark" href="#picks">Start quick picks</a></div></div>` : ''}
+      <div class="grid3">${recs.map(x => card(x.r, x.why)).join('')}</div>
+      <div style="display:flex;justify-content:center"><button type="button" class="btn line" data-act="shuffle">Show me different ones</button></div>
+    </div>
+    <section class="wrap" style="padding-block:72px 8px;display:flex;flex-direction:column;gap:28px">
+      <h2 class="h2" style="max-width:15ch">A few numbers behind <span class="mark">your plate</span></h2>
+      <div class="stats">
+        <div class="stat"><b>${N}</b><span>high-protein, healthy recipes from Mob</span></div>
+        <div class="stat"><b>${med}g</b><span>median protein per serving</span></div>
+        <div class="stat"><b>${lean}</b><span>with 30g+ protein for 700 kcal or less</span></div>
+      </div>
+    </section>
+    <section class="wrap" style="padding-block:64px 0">
+      <div style="background:var(--blue);border-radius:32px;padding:clamp(26px,5vw,60px);display:flex;justify-content:space-between;align-items:center;gap:22px;flex-wrap:wrap;position:relative;overflow:hidden">
+        ${squiggle('#EBC1FF','hide-s','right:24px;top:14px')}
+        <div style="display:flex;flex-direction:column;gap:10px;position:relative">
+          <h2 class="h2">Not sure yet?</h2>
+          <p style="font-size:18px;max-width:34ch">Fifteen quick yes-or-no picks, and recommendations start learning straight away.</p>
+        </div>
+        <a class="pill-btn" href="#picks" style="position:relative">Start quick picks<span class="dot" style="background:var(--yellow)">${ARROW}</span></a>
+      </div>
+    </section>`;
+}
+const shown = new Set();
+
+let loveTab = 'both';
+function vWeLove(){
+  const me = S.user, ot = other(me);
+  const both = D.filter(r => (S.ratings.will[r.s]||0) >= 4 && (S.ratings.ella[r.s]||0) >= 4).sort((a,b) => ((S.ratings.will[b.s]+S.ratings.ella[b.s]) - (S.ratings.will[a.s]+S.ratings.ella[a.s])) || b.n[1]-a.n[1]);
+  const favsOf = u => Object.keys(S.favs[u]).map(s => BY[s]).filter(Boolean);
+  const cookedMap = {}; S.cooked.forEach(c => { cookedMap[c.s] = cookedMap[c.s] || {n:0,last:c.d}; cookedMap[c.s].n++; if (c.d > cookedMap[c.s].last) cookedMap[c.s].last = c.d; });
+  const cookedList = Object.keys(cookedMap).map(s => BY[s]).filter(Boolean).sort((a,b) => cookedMap[b.s].last.localeCompare(cookedMap[a.s].last));
+  const tabs = [['both','Both 4★+',both],['mine','My favourites',favsOf(me)],['theirs',PEOPLE[ot].name+'’s favourites',favsOf(ot)],['cooked','Cooked',cookedList]];
+  const cur = tabs.find(t => t[0] === loveTab) || tabs[0];
+  const ratingsLine = r => ['will','ella'].map(u => `${PEOPLE[u].name} ${S.ratings[u][r.s] ? S.ratings[u][r.s]+'★' : '–'}`).join(' · ') + (cookedMap[r.s] ? ' · cooked ' + (cookedMap[r.s].n===1?'once':cookedMap[r.s].n===2?'twice':cookedMap[r.s].n+' times') : '');
+  const emptyMsg = {both:'Nothing you’ve both rated 4★ or more yet. Rate recipes after you cook them and they’ll gather here.', mine:'No favourites yet. Tap the heart on any recipe.', theirs:PEOPLE[ot].name+' hasn’t favourited anything yet.', cooked:'Nothing logged yet. Tap “I cooked this” on a recipe.'}[cur[0]];
+  return `<header class="hero" style="background:var(--yellow)">
+      <svg class="deco hide-s" style="right:7%;top:110px" width="130" height="118" viewBox="0 0 110 100" aria-hidden="true"><path d="M55 92C22 70 10 52 10 34 10 20 21 10 34 10c9 0 16 5 21 12 5-7 12-12 21-12 13 0 24 10 24 24 0 18-12 36-45 58Z" fill="#FF705D"/></svg>
+      <div class="wrap" style="display:flex;flex-direction:column;gap:18px;position:relative">
+        <span style="display:flex">${av('will')}<span style="margin-left:-10px">${av('ella')}</span></span>
+        <h1>We love</h1>
+        <p style="font-size:clamp(18px,2vw,24px);letter-spacing:-.03em;max-width:32ch">The recipes you keep coming back to. ${both.length} you both rate 4★ or more.</p>
+      </div>
+      ${clouds('#F5F1E4')}
+    </header>
+    <div class="wrap" style="display:flex;flex-direction:column;gap:18px;padding-top:28px">
+      <div class="chips" role="group" aria-label="Show">
+        ${tabs.map(([k,l,list]) => `<button type="button" class="fchip" data-act="lovetab" data-k="${k}" aria-pressed="${cur[0]===k}" style="background:#FFFFFF">${esc(l)} <span class="c">${list.length}</span></button>`).join('')}
+      </div>
+      <div class="panel">${cur[2].length ? cur[2].map(r => row(r, ratingsLine(r))).join('') : `<p class="empty">${emptyMsg}</p>`}</div>
+      ${cur[0]==='both' && both.length ? `<div><button type="button" class="pill-btn dark" data-act="pickone">Pick one for us<span class="dot" style="color:var(--ink)">${ARROW}</span></button></div>` : ''}
+    </div>`;
+}
+
+const L = {q:'', g:'all', sort:'p', kcal:1400, shown:40};
+function vLibrary(){
+  const counts = {}; D.forEach(r => counts[grp(r)] = (counts[grp(r)]||0)+1);
+  const order = ['chicken','fish','tofu','beans','meat','eggsdairy','other'];
+  return `<header class="hero" style="background:var(--lilac)">
+      ${squiggle('#2BA0FF','hide-s','right:5%;top:120px')}
+      <div class="wrap" style="display:flex;flex-direction:column;gap:18px;position:relative">
+        <span class="eyebrow" style="color:var(--ink)">The library</span>
+        <h1>${N} recipes,<br>protein first</h1>
+      </div>
+      ${clouds('#F5F1E4')}
+    </header>
+    <div class="wrap" style="display:flex;flex-direction:column;gap:18px;padding-top:28px">
+      <div class="tools">
+        <label class="search" for="q"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><circle cx="7" cy="7" r="5" fill="none" stroke="#5E5F59" stroke-width="2"/><path d="M11 11l3.5 3.5" stroke="#5E5F59" stroke-width="2" stroke-linecap="round"/></svg><input id="q" type="search" placeholder="Salmon, harissa, noodles…" value="${esc(L.q)}" aria-label="Search recipes and ingredients"></label>
+        <label class="field" for="sort">Sort
+          <select id="sort" class="sel">
+            ${[['p','Most protein'],['d','Most protein per calorie'],['k','Fewest calories'],['t','Quickest'],['f','Most fibre']].map(([v,l]) => `<option value="${v}"${L.sort===v?' selected':''}>${l}</option>`).join('')}
+          </select></label>
+        <div class="field"><label for="kcal">Max kcal per serving</label><span class="range"><input id="kcal" type="range" min="300" max="1400" step="50" value="${L.kcal}"><span id="kcalv" class="num" style="min-width:64px">${L.kcal>=1400?'Any':L.kcal}</span></span></div>
+      </div>
+      <div class="chips" role="group" aria-label="Main protein">
+        <button type="button" class="fchip" data-act="g" data-g="all" aria-pressed="${L.g==='all'}" style="background:#FFFFFF">All <span class="c">${N}</span></button>
+        ${order.filter(k=>counts[k]).map(k => `<button type="button" class="fchip" data-act="g" data-g="${k}" aria-pressed="${L.g===k}" style="background:${G[k].bg}">${esc(G[k].label)} <span class="c">${counts[k]}</span></button>`).join('')}
+      </div>
+      <p class="meta" id="libcount" aria-live="polite"></p>
+      <div class="panel" id="liblist"></div>
+      <div style="display:flex;justify-content:center"><button type="button" class="btn dark" data-act="more" id="morebtn">Show 40 more</button></div>
+    </div>`;
+}
+function libRows(){
+  const q = L.q.toLowerCase();
+  let rows = D.filter(r => (L.g==='all' || grp(r)===L.g) && (L.kcal>=1400 || r.n[0] <= L.kcal) && (!q || r.t.toLowerCase().includes(q) || r.i.some(x => x[1].toLowerCase().includes(q))));
+  const so = L.sort;
+  rows.sort((a,b) => so==='p' ? b.n[1]-a.n[1] || a.n[0]-b.n[0] : so==='d' ? dens(b)-dens(a) : so==='k' ? a.n[0]-b.n[0] : so==='f' ? b.n[6]-a.n[6] : (a.m||999)-(b.m||999) || b.n[1]-a.n[1]);
+  document.getElementById('libcount').textContent = rows.length === 1 ? '1 recipe' : rows.length + ' recipes';
+  const me = S.user;
+  document.getElementById('liblist').innerHTML = rows.length ? rows.slice(0, L.shown).map(r => {
+    const bits = [r.n[0] + ' kcal', (dens(r)*100).toFixed(1) + 'g per 100 kcal', r.m ? r.m + ' min' : '', S.ratings[me][r.s] ? 'you ' + S.ratings[me][r.s] + '★' : '', r.s in S.favs[me] ? '♥ favourite' : ''].filter(Boolean).join(' · ');
+    return row(r, bits);
+  }).join('') : '<p class="empty">No recipes match. Try a wider calorie limit or clear the search.</p>';
+  document.getElementById('morebtn').hidden = rows.length <= L.shown;
+  wirePhotos();
+}
+
+let P = null;
+function buildPicks(){
+  const u = S.user;
+  const pool = D.map((r,i)=>({r,i})).filter(({r}) => !touched(u,r.s) && !(r.s in S.likes[u]) && r.n[1] >= 25);
+  const byG = {}; pool.sort((a,b) => PS[b.i]-PS[a.i]).forEach(x => { const g = grp(x.r); (byG[g] = byG[g] || []).push(x.r.s); });
+  for (const g in byG) { const top = byG[g].slice(0, 24); for (let k = top.length-1; k > 0; k--) { const j = Math.floor(Math.random()*(k+1)); [top[k],top[j]] = [top[j],top[k]]; } byG[g] = top; }
+  const seq = ['chicken','fish','tofu','meat','chicken','eggsdairy','fish','beans','chicken','fish','tofu','meat','fish','chicken','eggsdairy'];
+  const list = []; const ptr = {};
+  for (const g of seq) { const arr = byG[g] || []; const k = ptr[g]||0; if (arr[k]) { list.push(arr[k]); ptr[g] = k+1; } }
+  P = {list, i:0, yes:0};
+}
+function vPicks(){
+  if (!P || P.u !== S.user) { buildPicks(); P.u = S.user; }
+  const done = P.i >= P.list.length;
+  const r = done ? null : BY[P.list[P.i]];
+  const g = r ? G[grp(r)] : null;
+  return `<section style="background:var(--lilac);min-height:100vh;margin-top:-74px;padding-top:104px;padding-bottom:40px">
+    <div class="wrap"><div class="pickwrap">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:12px"><span style="font-size:16px">Quick picks for ${esc(PEOPLE[S.user].name)}</span><span class="num" style="background:#FFFFFF;border-radius:999px;padding:6px 12px;font-size:14px">${Math.min(P.i+1,P.list.length)} of ${P.list.length}</span></div>
+      <div class="bar" role="progressbar" aria-valuemin="0" aria-valuemax="${P.list.length}" aria-valuenow="${P.i}" aria-label="Picks done"><i style="width:${P.list.length ? P.i/P.list.length*100 : 100}%"></i></div>
+      ${done ? `<h1 style="font-size:clamp(46px,9vw,72px);letter-spacing:-.065em;line-height:.95">Nice one.</h1>
+        <p style="font-size:19px;max-width:30ch">You said yes to ${P.yes} of ${P.list.length}. Tonight's picks now lean on what you liked.</p>
+        <div style="display:flex;gap:10px;flex-wrap:wrap"><a class="pill-btn dark" href="#tonight">See tonight's picks<span class="dot" style="color:var(--ink)">${ARROW}</span></a><button type="button" class="btn line" data-act="morepicks">Do 15 more</button></div>`
+      : `<h1 style="font-size:clamp(42px,8vw,64px);letter-spacing:-.065em;line-height:.95">Would you eat this?</h1>
+      <article class="pickcard" style="background:${g.bg}">
+        <div class="card-in">
+          <div class="card-top photo">
+            ${photo(r)}
+            <span class="tagchip">${esc(g.label)}</span>
+            <span class="pbadge" style="background:${g.bg}"><b style="font-size:64px">${r.n[1]}</b><span>g protein</span></span>
+          </div>
+          <div class="card-body">
+            <h3 style="font-size:26px">${esc(r.t)}</h3>
+            <p class="meta">${kcalLine(r)}</p>
+            <p class="meta">${esc(r.i.filter(x=>!x[2]).slice(0,6).map(x=>x[1]).join(', '))}</p>
+          </div>
+        </div>
+      </article>
+      <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px">
+        <button type="button" class="btn line" data-act="pickno" style="justify-content:center;min-height:62px;font-size:18px;border-radius:16px">Not for me</button>
+        <button type="button" class="btn dark" data-act="pickyes" style="justify-content:center;min-height:62px;font-size:18px;border-radius:16px">Would eat</button>
+      </div>
+      <a href="#r-${r.s}" style="text-align:center;font-size:14px;color:var(--muted)">See the full recipe</a>`}
+    </div></div>
+  </section>`;
+}
+
+let fromRoute = 'tonight';
+function vRecipe(s){
+  const r = BY[s];
+  if (!r) return `<div class="wrap" style="padding-top:60px"><p class="empty">That recipe isn't in the library. <a href="#library">Back to the library</a></p></div>`;
+  const g = G[grp(r)], me = S.user, ot = other(me);
+  const fav = r.s in S.favs[me];
+  const ck = S.cooked.filter(c => c.s === r.s);
+  const last = ck.length ? new Date(ck.map(c=>c.d).sort().pop()).toLocaleDateString('en-GB',{day:'numeric',month:'short'}) : '';
+  const mine = S.ratings[me][r.s] || 0;
+  const main = r.i.filter(x => !x[2]), serve = r.i.filter(x => x[2]);
+  return `<header class="rhero" style="background:${g.bg}">
+      ${squiggle(grp(r)==='eggsdairy'?'#FF705D':'#F5E211','hide-s','right:5%;top:140px')}
+      <div class="wrap" style="display:flex;flex-direction:column;gap:18px;position:relative">
+        <div class="rtools">
+          <a class="round" href="#${fromRoute}" aria-label="Back"><svg width="16" height="16" viewBox="0 0 14 14" aria-hidden="true"><path d="M12 7H2M6 3 2 7l4 4" fill="none" stroke="#2C2E2A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+          <span class="eyebrow" style="color:var(--ink)">${esc(g.label)}${r.ml && r.ml.length ? ' · ' + esc(r.ml.join(', ')) : ''}</span>
+          <button type="button" class="round" data-act="fav" data-s="${r.s}" aria-pressed="${fav}" aria-label="${fav?'Remove from favourites':'Add to favourites'}">${HEART}</button>
+        </div>
+        <div class="rgrid">
+          <div style="display:flex;flex-direction:column;gap:16px;min-width:0">
+            <span class="bigp"><b>${r.n[1]}</b><span>g protein</span></span>
+            <h1>${esc(r.t)}</h1>
+          </div>
+          ${photo(r,'rphoto')}
+        </div>
+        <p class="meta" style="color:var(--ink)">Photo: Mob</p>
+      </div>
+    </header>
+    <div class="wrap" style="display:flex;flex-direction:column;gap:28px;padding-top:24px">
+      <div class="macros">
+        <div class="macro"><b>${r.n[0]}</b><span>kcal</span></div>
+        <div class="macro"><b>${r.n[6]}g</b><span>fibre</span></div>
+        <div class="macro"><b>${r.n[2]}g</b><span>carbs</span></div>
+        <div class="macro"><b>${r.n[4]}g</b><span>fat</span></div>
+        <div class="macro"><b>${r.m ? r.m + 'm' : '–'}</b><span>total time</span></div>
+        <div class="macro"><b>${r.sv || '–'}</b><span>serves</span></div>
+      </div>
+      <div class="cols">
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <h2 style="font-size:28px;letter-spacing:-.05em">Ratings</h2>
+          <div class="rate">${av(me,true)}<span class="nm">You</span>
+            <span class="stars" role="group" aria-label="Your rating">${[1,2,3,4,5].map(v => `<button type="button" data-act="rate" data-s="${r.s}" data-v="${v}" class="${v<=mine?'on':''}" aria-pressed="${v===mine}" aria-label="${v} star${v>1?'s':''}">★</button>`).join('')}</span></div>
+          <div class="rate" style="padding:12px 14px">${av(ot,true)}<span class="nm">${PEOPLE[ot].name}</span><span class="stars">${starsRO(S.ratings[ot][r.s]||0)}</span></div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:6px">
+            <button type="button" class="btn dark" data-act="cook" data-s="${r.s}" style="min-height:52px;font-size:16px">I cooked this</button>
+            <a class="btn" href="https://www.mob.co.uk/recipes/${r.s}" target="_blank" rel="noopener" style="min-height:52px;font-size:16px;background:#FFFFFF">Open the method on Mob ↗</a>
+          </div>
+          <p class="meta">${ck.length ? 'Cooked ' + (ck.length===1?'once':ck.length===2?'twice':ck.length+' times') + ', last on ' + last + '.' : 'Not cooked yet.'} ${r.f ? 'Free on Mob.' : 'Method needs a Mob login.'}</p>
+          <div style="display:flex;flex-direction:column;gap:8px;margin-top:14px">
+            <h2 style="font-size:28px;letter-spacing:-.05em"><label for="note">Your method</label></h2>
+            <p class="meta">Your own steps, swaps and shortcuts. ${PEOPLE[ot].name} can see these too.</p>
+            <textarea id="note" class="note" data-s="${r.s}" rows="5" placeholder="e.g. Air-fry the chicken for 18 min. Double the lemon. Skip the anchovies.">${esc(S.notes[me][r.s]||'')}</textarea>
+            <span class="meta" id="notesaved" aria-live="polite"></span>
+            ${S.notes[ot][r.s] ? `<div class="notice" style="flex-direction:column;align-items:flex-start;gap:6px"><span class="eyebrow">${PEOPLE[ot].name}\u2019s method</span><p style="white-space:pre-line">${esc(S.notes[ot][r.s])}</p></div>` : ''}
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:4px">
+          <h2 style="font-size:28px;letter-spacing:-.05em;margin-bottom:6px">Ingredients${r.sv ? ' <span class="meta" style="font-size:16px;letter-spacing:0">for ' + r.sv + '</span>' : ''}</h2>
+          ${main.map((x,k) => `<label class="ing tick" for="ing${k}"><span><input type="checkbox" id="ing${k}"> ${esc(x[1])}</span><span>${esc(x[0])}</span></label>`).join('')}
+          ${serve.length ? `<p class="eyebrow" style="margin-top:14px">To serve</p>${serve.map(x => `<div class="ing"><span>${esc(x[1])}</span><span>${esc(x[0])}</span></div>`).join('')}` : ''}
+        </div>
+      </div>
+      <section style="display:flex;flex-direction:column;gap:18px;padding-top:24px">
+        <h2 class="h2" style="font-size:clamp(32px,4vw,48px)">More like this</h2>
+        <div class="grid3">${similar(r.s,3).map(x => card(x, '')).join('')}</div>
+      </section>
+    </div>`;
+}
+
+/* ---------- router ---------- */
+const ROUTES = ['tonight','welove','library','picks'];
+function render(){
+  let h = location.hash.slice(1);
+  const view = document.getElementById('view');
+  const logged = !!S.user;
+  document.getElementById('navwrap').hidden = !logged;
+  document.getElementById('tabbar').hidden = !logged;
+  if (!logged) { view.innerHTML = vLogin(); return; }
+  if (!h || h === 'login') h = 'tonight';
+  const isR = h.startsWith('r-');
+  if (!isR && !ROUTES.includes(h)) h = 'tonight';
+  if (!isR) fromRoute = h;
+  document.querySelectorAll('[data-route]').forEach(a => a.setAttribute('aria-current', a.dataset.route === h ? 'page' : 'false'));
+  const me = S.user;
+  document.getElementById('whobtn').innerHTML = `${av(me)}<span class="lbl">Cooking as ${PEOPLE[me].name} · switch</span>`;
+  document.getElementById('whobtn').setAttribute('aria-label', 'Cooking as ' + PEOPLE[me].name + '. Switch to ' + PEOPLE[other(me)].name);
+  view.innerHTML = (isR ? vRecipe(h.slice(2)) : h === 'tonight' ? vTonight() : h === 'welove' ? vWeLove() : h === 'library' ? vLibrary() : vPicks()) + footer();
+  if (h === 'library') libRows();
+  wirePhotos();
+}
+function footer(){
+  return `<footer class="wrap foot"><span>Two Plates · for Will &amp; Ella · recipes and nutrition from mob.co.uk</span>
+    <span>Photos from Mob. <button type="button" class="linkbtn" data-act="signout">Sign out</button></span></footer>`;
+}
+let lastHash = location.hash;
+window.addEventListener('hashchange', () => { shown.clear(); render(); window.scrollTo(0,0); lastHash = location.hash; });
+
+/* ---------- actions ---------- */
+document.addEventListener('click', e => {
+  const b = e.target.closest('[data-act]'); if (!b) return;
+  const a = b.dataset.act, s = b.dataset.s, me = S.user;
+  if (a === 'loginwho') { loginWho = b.dataset.u; const pv = document.getElementById('pass').value; loginErr=''; render(); const p = document.getElementById('pass'); p.value = pv; return; }
+  if (a === 'switch') { b.disabled = true; post('switch').then(({ok,j}) => { if (ok) { S.user = j.me; P = null; render(); toast('Now cooking as ' + PEOPLE[S.user].name); } else location.reload(); }); return; }
+  if (a === 'signout') { post('logout').then(() => { history.replaceState(null,'','#tonight'); location.reload(); }); return; }
+  if (a === 'aud') { S.aud = b.dataset.a; save(); render(); return; }
+  if (a === 'fav') { if (s in S.favs[me]) { delete S.favs[me][s]; toast('Removed from favourites'); } else { S.favs[me][s] = 1; toast('Added to favourites'); } save(); const y = window.scrollY; render(); window.scrollTo(0,y); return; }
+  if (a === 'rate') { const v = +b.dataset.v; if (S.ratings[me][s] === v) { delete S.ratings[me][s]; toast('Rating cleared'); } else { S.ratings[me][s] = v; delete S.skips[me][s]; toast('Rated ' + v + '★'); } save(); const y = window.scrollY; render(); window.scrollTo(0,y); return; }
+  if (a === 'cook') { S.cooked.push({s, d:new Date().toISOString(), by:me}); save(); const y = window.scrollY; render(); window.scrollTo(0,y); toast('Logged. Rate it while it’s fresh in your mind.'); return; }
+  if (a === 'shuffle') { const cur = [...document.querySelectorAll('.grid3 [data-act="fav"]')].map(x => x.dataset.s); cur.forEach(x => shown.add(x)); let recs = recommend(S.aud, 6, shown); if (recs.length < 3) { shown.clear(); recs = recommend(S.aud, 6, shown); } document.querySelector('.grid3').innerHTML = recs.map(x => card(x.r, x.why)).join(''); wirePhotos(); toast('Six more ideas'); return; }
+  if (a === 'lovetab') { loveTab = b.dataset.k; render(); return; }
+  if (a === 'pickone') { const both = D.filter(r => (S.ratings.will[r.s]||0) >= 4 && (S.ratings.ella[r.s]||0) >= 4); if (both.length) location.hash = 'r-' + both[Math.floor(Math.random()*both.length)].s; return; }
+  if (a === 'g') { L.g = b.dataset.g; L.shown = 40; document.querySelectorAll('[data-act="g"]').forEach(x => x.setAttribute('aria-pressed', x === b)); libRows(); return; }
+  if (a === 'more') { L.shown += 40; libRows(); return; }
+  if (a === 'pickyes' || a === 'pickno') { const cur = P.list[P.i]; if (a === 'pickyes') { S.likes[me][cur] = 1; P.yes++; } else S.skips[me][cur] = 1; save(); P.i++; render(); return; }
+  if (a === 'morepicks') { buildPicks(); P.u = S.user; render(); return; }
+});
+document.addEventListener('submit', e => {
+  if (e.target.id !== 'loginform') return;
+  e.preventDefault();
+  const v = document.getElementById('pass').value.trim();
+  if (!v) { loginErr = 'Enter the kitchen passcode to carry on.'; render(); document.getElementById('pass').focus(); return; }
+  const btn = e.target.querySelector('button[type="submit"]'); btn.disabled = true;
+  post('login', {who: loginWho, passcode: v}).then(({ok,j}) => {
+    if (ok) { location.hash = 'tonight'; location.reload(); return; }
+    loginErr = j.error || 'That passcode isn\u2019t right. Check it and try again.'; render(); const p = document.getElementById('pass'); p.value = v; p.focus();
+  }).catch(() => { loginErr = 'Couldn\u2019t reach the kitchen. Check your connection and try again.'; render(); });
+});
+let qT;
+document.addEventListener('input', e => {
+  if (e.target.id === 'note') { const sl = e.target.dataset.s, me = S.user, v = e.target.value; if (v.trim()) S.notes[me][sl] = v; else delete S.notes[me][sl]; save(); const t = document.getElementById('notesaved'); if (t) { t.textContent = 'Saving…'; clearTimeout(t._t); t._t = setTimeout(() => saving.then(() => t.textContent = 'Saved'), 700); } }
+  if (e.target.id === 'q') { clearTimeout(qT); qT = setTimeout(() => { L.q = e.target.value.trim(); L.shown = 40; libRows(); }, 120); }
+  if (e.target.id === 'kcal') { L.kcal = +e.target.value; document.getElementById('kcalv').textContent = L.kcal >= 1400 ? 'Any' : L.kcal; L.shown = 40; libRows(); }
+});
+document.addEventListener('change', e => { if (e.target.id === 'sort') { L.sort = e.target.value; L.shown = 40; libRows(); } });
+render();
+})();
+</script>
